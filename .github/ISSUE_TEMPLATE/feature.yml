@@ -1,0 +1,56 @@
+name: Feature or change proposal
+description: Propose new behavior, a refactor, dependency, or architecture change
+title: "[Proposal]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem before prescribing a large solution. The project favors
+        the smallest profile-neutral change that supports a real use case.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: Who needs this, and what can they not do today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the observable result rather than a speculative implementation.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Affected profile
+      options:
+        - Template repository
+        - Python core
+        - Python API
+        - Full-stack
+        - Multiple profiles
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Include simpler workarounds or existing features that were considered.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues for this proposal.
+          required: true
+        - label: I will wait for maintainer agreement before starting a substantial implementation.
+          required: true
