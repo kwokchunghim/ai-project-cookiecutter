@@ -142,7 +142,9 @@ make github-protect DRY_RUN=1
 
 ## Contribute to this template
 
-Clone the template, create a branch, and run:
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) for the issue-first workflow, fork setup,
+branch policy, review expectations, and change-specific verification. After cloning the
+template and creating a branch, run:
 
 ```bash
 make sync

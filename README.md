@@ -14,6 +14,9 @@ later changes from this template.
 New here? Follow the audience-specific setup and first-change workflow in
 [`ONBOARDING.md`](ONBOARDING.md).
 
+Want to improve the template? Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening
+an issue or pull request.
+
 ## Generate locally
 
 ```bash
@@ -98,6 +101,9 @@ published history. Bring a published feature branch up to date by merging the cu
 `origin/main`, not by rebasing it.
 
 ## Template development
+
+Contributor setup, issue policy, branch rules, and profile-specific verification are
+documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ```bash
 make sync
