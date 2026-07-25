@@ -1,5 +1,6 @@
 .DEFAULT_GOAL := help
-.PHONY: help sync lock format format-check lint test check render-test
+PRE_COMMIT := uvx --from pre-commit==4.3.0 pre-commit
+.PHONY: help sync lock hooks format format-check lint test quality-all check render-test
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*## "}; /^[a-zA-Z_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -9,6 +10,10 @@ sync: ## Install the locked template development environment
 
 lock: ## Refresh the template development lockfile
 	uv lock
+
+hooks: ## Install pre-commit and pre-push hooks
+	@test -d .git || (echo "Run git init -b main first" >&2; exit 1)
+	$(PRE_COMMIT) install --hook-type pre-commit --hook-type pre-push
 
 format: ## Format template support code
 	uv run ruff format hooks tests
@@ -25,4 +30,7 @@ test: ## Render and inspect all profiles
 
 render-test: test ## Alias for the isolated profile rendering suite
 
-check: format-check lint test ## Run every template-level check
+quality-all: format-check lint test ## Run template formatting, lint, and render tests
+
+check: ## Run every pre-commit hook over the repository
+	$(PRE_COMMIT) run --all-files --hook-stage manual

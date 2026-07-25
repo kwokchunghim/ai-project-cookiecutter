@@ -54,3 +54,13 @@ A one-time direct push of the initial scaffold may create `main` in a brand-new,
 remote. After that bootstrap push, never push directly to `main`, force-push, or rewrite
 published history. Merge current `origin/main` into a published feature branch instead
 of rebasing it. Do not commit, push, or create pull requests unless the user asks.
+
+For a larger change, use an ordered series of independently reviewable commits. Each
+commit must represent one logical change, leave the repository in a valid state, and
+pass the required hooks.
+
+Before creating any commit that will be pushed to a remote, run `make hooks` once in the
+checkout and leave both the pre-commit and pre-push hooks enabled. Never use
+`git commit --no-verify`, `git push --no-verify`, or `SKIP` to bypass required hooks.
+Fix hook failures and rerun the original command. Run `make check-all` before pushing
+even when the installed hooks have already passed.

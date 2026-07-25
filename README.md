@@ -107,6 +107,7 @@ documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ```bash
 make sync
+make hooks
 make check
 ```
 
