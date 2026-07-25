@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -90,6 +91,48 @@ def test_full_stack_contains_no_python_service(tmp_path: Path) -> None:
     assert not list(project.rglob("*.py")) or list(project.rglob("*.py")) == [
         project / "scripts/github_protect.py"
     ]
+
+
+def test_full_stack_retries_transient_type_generation_failure(tmp_path: Path) -> None:
+    project = render(tmp_path, "full-stack")
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    counter = tmp_path / "npm-invocations"
+    fake_npm = fake_bin / "npm"
+    fake_npm.write_text(
+        """#!/bin/sh
+count="$(cat "$FAKE_NPM_COUNTER" 2>/dev/null || printf 0)"
+count=$((count + 1))
+printf '%s' "$count" > "$FAKE_NPM_COUNTER"
+case "$*" in
+  *"supabase gen types"*)
+    test "$count" -ge 3 || exit 1
+    cat "$EXPECTED_TYPES"
+    ;;
+  *"prettier --write"*) ;;
+  *) exit 1 ;;
+esac
+"""
+    )
+    fake_npm.chmod(0o755)
+    fake_sleep = fake_bin / "sleep"
+    fake_sleep.write_text("#!/bin/sh\nexit 0\n")
+    fake_sleep.chmod(0o755)
+    env = {
+        **os.environ,
+        "EXPECTED_TYPES": str(project / "src/types/database.ts"),
+        "FAKE_NPM_COUNTER": str(counter),
+        "PATH": f"{fake_bin}{os.pathsep}{os.environ['PATH']}",
+    }
+
+    subprocess.run(
+        ["./scripts/check_database_types.sh"],
+        cwd=project,
+        env=env,
+        check=True,
+    )
+
+    assert counter.read_text() == "4"
 
 
 def test_invalid_repository_name_is_rejected(tmp_path: Path) -> None:
