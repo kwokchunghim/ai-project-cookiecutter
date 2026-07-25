@@ -101,6 +101,7 @@ published history. Bring a published feature branch up to date by merging the cu
 
 ```bash
 make sync
+make hooks
 make check
 ```
 

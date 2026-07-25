@@ -1,0 +1,43 @@
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        stages: [pre-commit, manual]
+      - id: end-of-file-fixer
+        stages: [pre-commit, manual]
+      - id: check-symlinks
+        stages: [pre-commit, manual]
+      - id: check-merge-conflict
+        stages: [pre-commit, manual]
+      - id: check-added-large-files
+        args: [--maxkb=500]
+        stages: [pre-commit, manual]
+      - id: detect-private-key
+        stages: [pre-commit, manual]
+      - id: check-json
+        stages: [pre-commit, manual]
+      - id: check-toml
+        exclude: ^\{\{cookiecutter\.repository_name\}\}/
+        stages: [pre-commit, manual]
+      - id: check-yaml
+        exclude: ^\{\{cookiecutter\.repository_name\}\}/
+        stages: [pre-commit, manual]
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+        stages: [pre-commit, manual]
+
+  - repo: local
+    hooks:
+      - id: template-quality
+        name: template format checks, lint, and render tests
+        entry: make quality-all
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit, pre-push, manual]
