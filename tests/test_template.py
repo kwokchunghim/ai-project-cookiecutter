@@ -93,6 +93,19 @@ def test_full_stack_contains_no_python_service(tmp_path: Path) -> None:
     ]
 
 
+def test_generated_agent_guidance_requires_modular_verified_commits(
+    tmp_path: Path,
+) -> None:
+    project = render(tmp_path, "python-core")
+    guidance = (project / "AGENTS.md").read_text()
+
+    assert "commit must represent one logical change" in guidance
+    assert "git commit --no-verify" in guidance
+    assert "git push --no-verify" in guidance
+    assert "`SKIP`" in guidance
+    assert "Run `make check-all` before pushing" in guidance
+
+
 def test_full_stack_retries_transient_type_generation_failure(tmp_path: Path) -> None:
     project = render(tmp_path, "full-stack")
     fake_bin = tmp_path / "bin"
