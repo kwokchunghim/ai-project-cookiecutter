@@ -96,3 +96,7 @@ External pull requests require review from `@kwokchunghim` and passing CI.
 Maintainer-authored pull requests rely on passing CI because GitHub does not allow
 authors to approve their own pull requests. DCO sign-off, signed commits, and a human
 approval on maintainer-authored pull requests are not required.
+
+Contributors do not need to bump a version or prepare a tag. Maintainers merge passing
+pull requests independently and publish meaningful batches from tested commits on
+`main` by following [RELEASING.md](RELEASING.md).

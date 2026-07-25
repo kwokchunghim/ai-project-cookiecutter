@@ -64,3 +64,10 @@ checkout and leave both the pre-commit and pre-push hooks enabled. Never use
 `git commit --no-verify`, `git push --no-verify`, or `SKIP` to bypass required hooks.
 Fix hook failures and rerun the original command. Run `make check-all` before pushing
 even when the installed hooks have already passed.
+
+## Release safety
+
+Do not create, move, or delete a tag; publish a release; or trigger a deployment unless
+the user explicitly authorizes that external action. Release only a tested commit
+already merged into `main`, record user-visible changes, and never move or reuse a
+published tag.

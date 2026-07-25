@@ -50,3 +50,10 @@ checkout and leave both the pre-commit and pre-push hooks enabled. Never use
 `git commit --no-verify`, `git push --no-verify`, or `SKIP` to bypass required hooks.
 Fix hook failures and rerun the original command. Run `make check` before pushing even
 when the installed hooks have already passed.
+
+## Release safety
+
+Do not create, move, or delete a tag; publish a GitHub release; or trigger a deployment
+unless the user explicitly authorizes that external action. When authorized, follow
+`RELEASING.md`, release only a tested commit already merged into `main`, and never move
+or reuse a published tag.

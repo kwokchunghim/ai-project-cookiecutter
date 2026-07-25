@@ -22,3 +22,11 @@ branch instead of rebasing it.
 Pull requests should explain the problem, the chosen minimal approach, test evidence,
 manual or operational verification, and any security, privacy, migration, or rollback
 impact. DCO and signed commits are not mandatory.
+
+## Releases
+
+Keep `main` releasable by merging focused pull requests only after their required checks
+pass. Tagged releases are optional until the project is distributed or deployed. When
+the project needs releases, use semantic versions unless it documents another scheme,
+tag only tested commits already merged into `main`, record user-visible changes, and
+never move or reuse a published tag.
