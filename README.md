@@ -17,6 +17,9 @@ New here? Follow the audience-specific setup and first-change workflow in
 Want to improve the template? Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening
 an issue or pull request.
 
+Maintainers publishing a tested template version should follow
+[`RELEASING.md`](RELEASING.md).
+
 ## Generate locally
 
 ```bash
@@ -53,6 +56,15 @@ After this template has been published, generate it directly from GitHub:
 cd /Users/tony/workspaces
 uvx --from cookiecutter==2.7.1 \
   cookiecutter gh:kwokchunghim/ai-project-cookiecutter
+```
+
+That command uses the current default branch. For a reproducible snapshot, select a
+published release:
+
+```bash
+uvx --from cookiecutter==2.7.1 \
+  cookiecutter --checkout vX.Y.Z \
+  gh:kwokchunghim/ai-project-cookiecutter
 ```
 
 ## Create the new GitHub repository

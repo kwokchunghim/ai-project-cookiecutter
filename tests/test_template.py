@@ -21,6 +21,21 @@ COMMON_FILES = {
 }
 
 
+def test_root_release_guidance_is_linked() -> None:
+    guidance = (TEMPLATE_ROOT / "RELEASING.md").read_text()
+    readme = (TEMPLATE_ROOT / "README.md").read_text()
+    contributing = (TEMPLATE_ROOT / "CONTRIBUTING.md").read_text()
+    agent_guidance = (TEMPLATE_ROOT / "AGENTS.md").read_text()
+
+    assert "Keep `main` releasable" in guidance
+    assert "explicit maintainer" in guidance
+    assert "never move" in guidance.lower()
+    assert "--checkout vX.Y.Z" in guidance
+    assert "[`RELEASING.md`](RELEASING.md)" in readme
+    assert "[RELEASING.md](RELEASING.md)" in contributing
+    assert "explicitly authorizes" in agent_guidance
+
+
 def render(tmp_path: Path, profile: str) -> Path:
     name = f"rendered-{profile}"
     result = cookiecutter(
@@ -104,6 +119,24 @@ def test_generated_agent_guidance_requires_modular_verified_commits(
     assert "git push --no-verify" in guidance
     assert "`SKIP`" in guidance
     assert "Run `make check-all` before pushing" in guidance
+
+
+@pytest.mark.parametrize("profile", PROFILES)
+def test_generated_release_guidance_requires_authorized_immutable_releases(
+    tmp_path: Path,
+    profile: str,
+) -> None:
+    project = render(tmp_path, profile)
+    agent_guidance = " ".join((project / "AGENTS.md").read_text().split())
+    contributor_guidance = " ".join((project / "CONTRIBUTING.md").read_text().split())
+
+    assert not (project / "RELEASING.md").exists()
+    assert "explicitly authorizes" in agent_guidance
+    assert "tested commit" in agent_guidance
+    assert "never move or reuse a published tag" in agent_guidance
+    assert "Keep `main` releasable" in contributor_guidance
+    assert "Tagged releases are optional" in contributor_guidance
+    assert "semantic versions" in contributor_guidance
 
 
 def test_full_stack_retries_transient_type_generation_failure(tmp_path: Path) -> None:
