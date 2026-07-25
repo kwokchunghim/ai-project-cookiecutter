@@ -1,0 +1,63 @@
+name: Bug report
+description: Report incorrect or broken template behavior
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Do not include credentials, personal data,
+        production prompts, or vulnerability details in a public issue.
+
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Affected profile
+      options:
+        - Template repository
+        - Python core
+        - Python API
+        - Full-stack
+        - Multiple profiles
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and why it is incorrect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide the smallest commands or steps that reproduce the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the OS and relevant Python, uv, Node, npm, Docker, or Supabase versions.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues for this problem.
+          required: true
+        - label: This report contains no secrets, personal data, production prompts, or private vulnerability details.
+          required: true
