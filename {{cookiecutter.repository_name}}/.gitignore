@@ -1,0 +1,29 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+*.log
+{% if cookiecutter.profile == "full-stack" -%}
+node_modules/
+dist/
+coverage/
+.supabase/
+supabase/.branches/
+supabase/.temp/
+{% else -%}
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+coverage.xml
+.coverage
+htmlcov/
+{% endif %}
+.cache/

@@ -1,0 +1,18 @@
+{
+  "project_name": "My AI Project",
+  "repository_name": "{{ cookiecutter.project_name | lower | replace(' ', '-') | replace('_', '-') }}",
+  "package_name": "{{ cookiecutter.repository_name | replace('-', '_') }}",
+  "description": "A production-minded AI project.",
+  "profile": [
+    "python-core",
+    "python-api",
+    "full-stack"
+  ],
+  "author_name": "Tony Kwok",
+  "github_owner": "kwokchunghim",
+  "license": [
+    "MIT",
+    "Apache-2.0",
+    "Proprietary"
+  ]
+}

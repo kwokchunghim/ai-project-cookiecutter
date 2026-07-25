@@ -1,0 +1,68 @@
+name: Template CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  template:
+    name: ${{ matrix.profile }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [python-core, python-api, full-stack]
+    steps:
+      - name: Check out template
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          version: "0.11.23"
+          python-version: "3.12"
+          enable-cache: true
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Install template test environment
+        run: make sync
+      - name: Render profile in isolation
+        env:
+          PROFILE: ${{ matrix.profile }}
+        run: |
+          package_name="ci_${PROFILE//-/_}"
+          uv run cookiecutter . \
+            --no-input \
+            --output-dir "$RUNNER_TEMP/generated" \
+            project_name="CI $PROFILE" \
+            repository_name="ci-$PROFILE" \
+            package_name="$package_name" \
+            profile="$PROFILE" \
+            author_name="Template CI" \
+            github_owner="kwokchunghim" \
+            license="MIT"
+      - name: Initialize generated repository
+        working-directory: ${{ runner.temp }}/generated/ci-${{ matrix.profile }}
+        run: |
+          git init -b main
+          git add .
+          make sync
+          make hooks
+      - name: Verify generated repository
+        working-directory: ${{ runner.temp }}/generated/ci-${{ matrix.profile }}
+        run: make check-all
+      - name: Stop local Supabase
+        if: ${{ always() && matrix.profile == 'full-stack' }}
+        working-directory: ${{ runner.temp }}/generated/ci-${{ matrix.profile }}
+        run: npm exec -- supabase stop --no-backup

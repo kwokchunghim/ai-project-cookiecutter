@@ -1,0 +1,27 @@
+[project]
+name = "ai-project-cookiecutter"
+version = "0.1.0"
+description = "Tests and tooling for the AI project Cookiecutter template."
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "cookiecutter==2.7.1",
+  "pytest==8.4.2",
+  "ruff==0.12.12",
+]
+
+[tool.uv]
+package = false
+required-version = ">=0.11.23"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
