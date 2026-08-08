@@ -8,7 +8,7 @@ dependencies = []
 [dependency-groups]
 dev = [
   "cookiecutter==2.7.1",
-  "pytest==8.4.2",
+  "pytest==9.1.1",
   "ruff==0.12.12",
 ]
 
